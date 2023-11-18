@@ -1,4 +1,7 @@
 node_modules/
 
 package-lock.json
+template.js
+test.js
+main.db
 .env
