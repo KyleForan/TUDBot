@@ -17,7 +17,7 @@ for (file of commandFiles) {
     const { data, execute } = command
 
     if ('data' in command && 'execute' in command) {
-        commands.push(command.data.toJSON())
+        commands.push(command.data)
     }
     else {
         console.warn(`${file} did not have both data and execute properties`)

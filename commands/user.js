@@ -1,10 +1,20 @@
 const { SlashCommandBuilder } = require('discord.js');
 
 module.exports = {
-	data: new SlashCommandBuilder()
-		.setName('user')
-		.setDescription('Replies with info about the user!'),
+	data: {
+		name: 'user',
+		description: 'Gives information about the information'	
+	},
 	async execute(interaction) {
-		await interaction.reply(`This command was run by ${interaction.user.username}`);
+
+		const date = interaction.user.createdAt.toLocaleDateString('en-IE', {
+			month: 'long', year: 'numeric'
+		})
+		const name = interaction.user.username
+
+		await interaction.reply({
+			content: `This command was run by ${name}.\nMember since ${date}`,
+			ephemeral: true
+		});
 	},
 };
