@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
+import { SlashCommandBuilder, PermissionFlagsBits, Message } from 'discord.js';
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -15,6 +15,7 @@ module.exports = {
 			.setDescription('Specific users messages to delete')
 			.setRequired(false)
 		),
+	// TODO: make type for interaction??
 	async execute(interaction) {
 
 		const { channel, options, client } = interaction
@@ -26,7 +27,7 @@ module.exports = {
 		if (amount > 98) amount = 99
 		
 		let messages = await channel.messages.fetch({ limit: amount })
-		if (target) messages = await messages.filter(m => m.author.username == target.username)
+		if (target) messages = await messages.filter(m: Message => m.author.username == target.username)
 		
 		await channel.bulkDelete(messages)
 

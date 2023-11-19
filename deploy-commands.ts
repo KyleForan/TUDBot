@@ -1,7 +1,7 @@
-const Discord = require('discord.js')
-const fs = require('node:fs')
-const path = require('node:path')
-const { clientId, guilds } = require('./config.json')
+import * as Discord from 'discord.js'
+import * as fs from 'node:fs'
+import * as path from 'node:path'
+import { clientId, guilds } from './config.json'
 
 require('dotenv').config()
 
