@@ -19,9 +19,9 @@ const db_all = (query, params) => {
     })
 }
 
-const db_run = query => {
+const db_run = (query, params) => {
     return new Promise((resolve, reject) => {
-        db.run(query, err => {
+        db.run(query, params, err => {
             if (err) return reject(err)
             resolve(true)
         })
@@ -44,7 +44,7 @@ const initDatabase = async () => {
     db = new sqlite3.Database(dbName, logErr)
 
     // * Creates Table
-    sql = 'CREATE Table users(id INTEGER PRIMARY KEY, username, balance, daily)'
+    sql = 'CREATE Table users(id INTEGER PRIMARY KEY, username STRING, balance INTEGER, daily INTEGER)'
     await db_run(sql).catch(logErr)
 
     console.log(`Database ${dbName} was created`)
@@ -53,7 +53,6 @@ const initDatabase = async () => {
 // * ----------------
 // * Export Functions
 // * ----------------
-// TODO: Fix updateBal and updateDaily
 
 module.exports = {
     // * get data from table
@@ -61,7 +60,6 @@ module.exports = {
         
         sql = 'SELECT * FROM users WHERE id = ?'
         const rows = await db_all(sql, [user.id]).catch(logErr)
-    
         if (rows.length == 0) return insertRow(user)
         else data = rows[0]
     
@@ -69,14 +67,20 @@ module.exports = {
     
     },
     async updateBal(user, bal) {
+
         sql = 'UPDATE users SET balance = ? WHERE id = ?'
         await db_run(sql, [bal, user.id]).catch(logErr)
+
         return [bal, user]
+
     },
     async updateDaily(user) {
+
         sql = 'UPDATE users SET daily = ? WHERE id = ?'
         await db_run(sql, [Date.now(), user.id]).catch(logErr)
+
         return [user, Date.now()]
+
     }
     
 }
@@ -84,10 +88,11 @@ module.exports = {
 // * Insert row into table
 const insertRow = user => {
     sql = 'INSERT INTO users(id, username, balance, daily) VALUES (?,?,?,?)'
-    const data = [user.id, user.username, '0', null]
+    const data = [user.id, user.username, 50, null]
 
     db.run(sql, data, logErr)
 
-    return data
+    // TODO: LOOK BETTER
+    return { id: data[0], username: data[1], balance: data[2], daily: data[3] }
 }
 
