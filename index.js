@@ -1,5 +1,7 @@
 const Discord = require('discord.js')
-const handler = require('./command-handler')
+const handler = require('./commands/command-handler')
+
+require('./deploy-commands')
 
 // Create bot instance
 const bot = new Discord.Client({

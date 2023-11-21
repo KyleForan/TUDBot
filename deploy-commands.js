@@ -10,18 +10,29 @@ const commandFiles = fs.readdirSync(commandspath).filter(file => file.endsWith('
 
 let commands = []
 
-for (file of commandFiles) {
-    const filepath = path.join(commandspath, file)
-    const command = require(filepath)
+const dirPath = path.join(__dirname, 'commands')
+// const dirStats = fs.lstatSync(__dirname)
+const dirFolders = fs.readdirSync(dirPath).filter(folder => !folder.endsWith('.js'))
 
-    const { data, execute } = command
+for (folder of dirFolders) {
 
-    if ('data' in command && 'execute' in command) {
-        commands.push(command.data)
-    }
-    else {
-        console.warn(`${file} did not have both data and execute properties`)
-    }
+	const commandPath = path.join(dirPath, folder)
+	const commandFiles = fs.readdirSync(commandPath).filter(file => file.endsWith('.js'))
+
+	for (file of commandFiles) {
+			const filepath = path.join(commandPath, file)
+			const command = require(filepath)
+	
+			const { data, execute } = command
+	
+			if (data && execute) {
+				commands.push(data)
+			}
+			else {
+				console.warn(`${file} did not have both data and execute properties`)
+			}
+		}
+	
 }
 
 const rest = new Discord.REST().setToken(process.env.TOKEN);

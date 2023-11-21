@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
-const { getData, updateBal } = require('../economy');
+const { getData, updateBal } = require('../../economy');
 const calls = ['Heads', 'Tails']
 
 module.exports = {

@@ -29,7 +29,7 @@ module.exports = {
 		if (target) messages = await messages.filter(m => m.author.username == target.username)
 		
 		await channel.bulkDelete(messages)
-
+		
 		await interaction.reply({
 			content: `Deleted ${messages.size} from ${target ? target : 'This channel'}!`,
 		});

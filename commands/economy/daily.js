@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
-const { getData, updateBal, updateDaily } = require('../economy');
+const { getData, updateBal, updateDaily } = require('../../economy');
 
 const day = 1000 * 60 * 60 * 24
 

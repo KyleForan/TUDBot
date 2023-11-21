@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
-const economy = require('../economy')
+const economy = require('../../economy')
 
 module.exports = {
 	data: {
@@ -16,7 +16,8 @@ module.exports = {
         const data = await economy.getData(interaction.user)
         var { balance } = data
 
-		console.log(data)
+		// ! DEV REMOVE LATER
+		// console.log(data)
 
         if (!balance) {
             console.error(`${interaction.user.username} balance undefined!`)
