@@ -2,6 +2,8 @@ const { SlashCommandBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } = re
 
 const timeOut = 1000 * 5
 
+// TODO: EVERYTHING
+
 const buttons = {
     hitButton: { 
         id: 'hit', label: 'Hit',
@@ -25,12 +27,13 @@ module.exports = {
         Object.values(buttons).forEach(element => {   
             row.addComponents(
                 new ButtonBuilder()
-                    .setCustomId(element.id)
-                    .setLabel(element.label)
-                    .setStyle(element.style)
+                .setCustomId(element.id)
+                .setLabel(element.label)
+                .setStyle(element.style)
                 )
             });
 			
+            const calls = { hit, fold }
             const msg = await interaction.reply({
                 ephemeral: true, fetchReply: true,
                 content: "This is a  Button Test!",
@@ -68,7 +71,6 @@ module.exports = {
         },
     };
             
-const calls = { hit, fold }
 
 const hit = () => {
     console.log('hit')

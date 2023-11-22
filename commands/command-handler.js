@@ -1,6 +1,9 @@
 const Discord = require('discord.js')
 const fs = require('node:fs')
 const path = require('node:path')
+const { clientId, guilds } = require('../config.json')
+
+require('dotenv').config()
 
 module.exports = (client) => {
 
@@ -10,6 +13,8 @@ module.exports = (client) => {
 
     for (folder of dirFolders) {
 
+        if (folder == 'depreciated') continue
+        
         const commandPath = path.join(dirPath, folder)
         const commandFiles = fs.readdirSync(commandPath).filter(file => file.endsWith('.js'))
 
@@ -27,7 +32,27 @@ module.exports = (client) => {
                 }
             }
         
-    }
+        }
+
+        const rest = new Discord.REST().setToken(process.env.TOKEN);
+        const commands = Array.from(client.commands.values()).map((el, _) => el.data);
+    
+        (async () => {
+            try {
+                console.log(`Started refreshing ${commands.length} application (/) commands.`);
+
+                // The put method is used to fully refresh all commands in the guild with the current set
+                const data = await rest.put(
+                    Discord.Routes.applicationGuildCommands(clientId, guilds.test),
+                    { body: commands },
+                );
+
+                console.log(`Successfully reloaded ${data.length} application (/) commands.`);
+            } catch (error) {
+                // And of course, make sure you catch and log any errors!
+                console.error(error);
+            }
+        })()
 
     // Reads Files in command directory and subdirectory and loads them as commands
     client.on(Discord.Events.InteractionCreate, async interaction => {
@@ -53,8 +78,8 @@ module.exports = (client) => {
             // skip
         }
 
-
-        
     });
+    
 
 }
+    
